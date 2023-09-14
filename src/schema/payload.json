@@ -1,0 +1,148 @@
+{
+  "data": [
+    {
+      "name": "firstName",
+      "label": "First Name",
+      "type": "text",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "required"
+        },
+        {
+          "type": "min",
+          "params": 5
+        },
+        {
+          "type": "max",
+          "params": 255
+        },
+        {
+          "type": "test",
+          "params": {
+            "type": "custom",
+            "name": "apple-word",
+            "message": "You can't use the apple word",
+            "args": "value",
+            "body": "if (value.toLowerCase().includes('apple')) { return false; } else { return true; }"
+          }
+        }
+      ]
+    },
+    {
+      "name": "middleName",
+      "label": "Middle Name",
+      "type": "text",
+      "validationType": "string"
+    },
+    {
+      "name": "lastName",
+      "label": "Last name",
+      "type": "text",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "name": "birthday",
+      "label": "Birthday",
+      "type": "date",
+      "validationType": "date",
+      "validations": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "name": "maritalStatus",
+      "label": "Marital Status",
+      "type": "select",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "required"
+        },
+        {
+          "type": "oneOf",
+          "params": ["single", "married", "widowed"]
+        }
+      ]
+    },
+    {
+      "name": "gender",
+      "label": "Gender",
+      "type": "select",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "required"
+        },
+        {
+          "type": "oneOf",
+          "params": ["male", "female", "na"]
+        }
+      ]
+    },
+    {
+      "name": "address",
+      "label": "Address",
+      "type": "select",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "required",
+          "params": "Required"
+        },
+        {
+          "type": "oneOf",
+          "params": [
+            ["bikiniBottom", "jellyfishFields", "newKelpCity", "rockBottom"]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "employeeId",
+      "label": "Employee ID",
+      "type": "text",
+      "validationType": "number",
+      "validationTypeError": "Employee ID must be a string",
+      "validations": [
+        {
+          "type": "required",
+          "params": "Required"
+        },
+        {
+          "type": "test",
+          "params": {
+            "type": "existing",
+            "fnName": "len"
+          }
+        },
+        {
+          "type": "test",
+          "params": {
+            "type": "existing",
+            "fnName": "unique"
+          }
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "select",
+      "validationType": "string",
+      "validations": [
+        {
+          "type": "oneOf",
+          "params": ["submitted", "draft"]
+        }
+      ]
+    }
+  ]
+}

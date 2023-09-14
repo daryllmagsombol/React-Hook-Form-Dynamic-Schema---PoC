@@ -1,133 +1,23 @@
 import * as yup from 'yup';
+import { tests } from './schema-tests';
 
-export const tests = {
-  len: {
-    fnName: 'len',
-    message: 'Employee ID must be exactly 7 characters',
-    fn: (val) => val && val.toString().length === 7,
-  },
-  unique: {
-    name: 'unique',
-    message: 'Employee ID must be unique',
-    fn: async function (value) {
-      // Validates thru API call
-      if (!value) return true; // Skip the test if the field is empty
-      const { checkEmployeeIdUniqueness } = this.options.context;
-      return checkEmployeeIdUniqueness(value); // Call the validation function and return the result
-    },
-  },
-};
-
-export const personalInfoFields = [
-  {
-    name: 'firstName',
-    label: 'First Name',
-    validationType: 'string',
-    validations: [
-      {
-        type: 'required',
-        // params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'middleName',
-    label: 'MIddle Name',
-    validationType: 'string',
-  },
-  {
-    name: 'lastName',
-    label: 'Last name',
-    validationType: 'string',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'birthday',
-    label: 'Birthday',
-    validationType: 'date',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'gender',
-    label: 'Gender',
-    validationType: 'string',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'address',
-    label: 'Address',
-    validationType: 'string',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'address',
-    label: 'Address',
-    validationType: 'number',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-    ],
-  },
-  {
-    name: 'employeeId',
-    label: 'Employee ID',
-    validationType: 'string',
-    validationTypeError: 'Employee ID must be a string',
-    validations: [
-      {
-        type: 'required',
-        params: 'Required',
-      },
-      {
-        type: 'test',
-        params: { fnName: 'len' },
-      },
-      {
-        type: 'test',
-        params: { fnName: 'unique' },
-      },
-    ],
-  },
-  {
-    name: 'status',
-    label: 'Status',
-    validationType: 'string',
-    validations: [
-      {
-        type: 'oneOf',
-        params: ['submitted', 'draft'],
-      },
-    ],
-  },
-];
+export const InputDefaultRequiredTemplate = ({ label }): string =>
+  `Input ${label}`;
+export const selectDefaultRequiredTemplate = ({ label }): string =>
+  `Select ${label}`;
+export const dateDefaultRequiredTemplate = ({ label }): string =>
+  `Input date ${label}`;
+export const defaultInvalidCharacter = ({ label }): string =>
+  `Invalid Character(s) in ${label}`;
+export const defaultCheckboxRequired = ({ label }): string =>
+  `Please select ${label}.`;
 
 const getValidationSchema = (fields) => {
   const schema = fields.reduce((schema, field) => {
     const {
-      label,
       name,
+      label,
+      type: fieldType,
       validationType,
       validationTypeError,
       validations = [],
@@ -137,26 +27,54 @@ const getValidationSchema = (fields) => {
     if (!yup[validationType]) {
       return schema;
     }
-    let validator = yup[validationType]().typeError(validationTypeError || '');
+    let validator = yup[validationType]();
     if (label) validator = validator.label(label);
 
     validations.forEach((validation) => {
-      const { params = '', type } = validation;
+      const { params, type } = validation;
       if (!validator[type]) {
         return;
       }
-      if (type === 'test' && params.fnName) {
-        const testFn = tests[params.fnName];
-        if (!!testFn) {
-          validator = validator[type](
-            testFn.message,
-            testFn.message,
-            testFn.fn
-          );
+
+      if (type === 'required') {
+        switch (fieldType) {
+          case 'text':
+            validator = validator[type](InputDefaultRequiredTemplate);
+            break;
+          case 'select':
+            validator = validator[type](selectDefaultRequiredTemplate);
+            break;
+          case 'date':
+            validator = validator[type](dateDefaultRequiredTemplate);
+            break;
+          default:
+            validator = validator[type]();
         }
-        return;
+      } else if (type === 'test') {
+        if (params?.fnName) {
+          const customFn = tests[params.fnName];
+          if (!!customFn) {
+            validator = validator[type](
+              customFn.message,
+              customFn.message,
+              customFn.fn
+            );
+          }
+        } else if (params.type === 'custom') {
+          try {
+            const customFn = new Function(params.args, params.body);
+            validator = validator[type](params.name, params.message, customFn);
+            return;
+          } catch (e) {
+            console.log('Error decoding function body.');
+            return;
+          }
+        }
+      } else {
+        validator = validator[type](params);
       }
-      validator = validator[type](params);
+
+      validator = validator.typeError(validationTypeError || '');
     });
 
     if (!isObject) {

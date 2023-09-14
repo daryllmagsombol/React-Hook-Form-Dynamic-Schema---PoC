@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // import personalInformationSchema from './schema/personalInformation';
-import getValidationSchema, { personalInfoFields } from './schema/common';
+import getValidationSchema from './schema/common';
+const { data: personalInfoFields } = require('./schema/payload.json');
 
 const emptyEmployeeForm = {
   status: 'new',
@@ -116,14 +117,10 @@ export default function App() {
     const fieldsToValidate = Object.keys(emptyEmployeeForm).filter(
       (field) => field != 'employeeId'
     );
-    console.log(fieldsToValidate);
-    console.log(fieldsToValidate);
     // Trigger validation for the specific fields only
     const validationResults = await Promise.all(
       fieldsToValidate.map((fieldName) => trigger(fieldName))
     );
-
-    console.log(validationResults);
 
     const hasErrors = validationResults.some((result) => result === false);
 
@@ -136,8 +133,6 @@ export default function App() {
       Swal.fire('Employee successfully updated!', '', 'success');
     }
   };
-
-  console.log(employeeList);
 
   // custom draft minimum fields validation
   const handlePersonalInfoSubmitDraft = async () => {
@@ -153,8 +148,6 @@ export default function App() {
     const validationResults = await Promise.all(
       fieldsToValidate.map((fieldName) => trigger(fieldName))
     );
-
-    console.log(validationResults);
 
     const hasErrors = validationResults.some((result) => result === false);
 
