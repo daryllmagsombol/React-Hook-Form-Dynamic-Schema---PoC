@@ -186,8 +186,15 @@ export default function App() {
     context: { checkEmployeeIdUniqueness },
   });
 
-  const { handleSubmit, clearErrors, trigger, getValues } =
-    personalInfoFormMethods;
+  const {
+    handleSubmit,
+    clearErrors,
+    trigger,
+    getValues,
+    formState: { errors },
+  } = personalInfoFormMethods;
+
+  console.log(errors, 'errs');
 
   const getFormHeader = (): any => {
     if (formMode == 'add') {

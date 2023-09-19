@@ -10,14 +10,6 @@
           "type": "required"
         },
         {
-          "type": "min",
-          "params": 5
-        },
-        {
-          "type": "max",
-          "params": 255
-        },
-        {
           "type": "test",
           "params": {
             "type": "custom",
@@ -141,6 +133,54 @@
         {
           "type": "oneOf",
           "params": ["submitted", "draft"]
+        }
+      ]
+    },
+    {
+      "name": "addresses",
+      "type": "array",
+      "validationType": "array",
+      "arrayFields": [
+        {
+          "name": "street",
+          "label": "Street",
+          "type": "text",
+          "validationType": "string",
+          "validations": [
+            {
+              "type": "required"
+            }
+          ]
+        },
+        {
+          "name": "city",
+          "label": "City",
+          "type": "text",
+          "validationType": "string",
+          "validations": [
+            {
+              "type": "required"
+            }
+          ]
+        },
+        {
+          "name": "barangay",
+          "label": "Barangay",
+          "type": "text",
+          "validationType": "string",
+          "validations": [
+            {
+              "type": "required"
+            },
+            {
+              "type": "min",
+              "params": 5
+            },
+            {
+              "type": "max",
+              "params": 255
+            }
+          ]
         }
       ]
     }

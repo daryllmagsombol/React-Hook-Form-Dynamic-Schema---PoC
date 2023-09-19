@@ -138,6 +138,54 @@ const PersonalInfoForm = ({
           )}
         />
       </div>
+      <div>
+        <h3>Addresses</h3>
+      </div>
+      <div>
+        <label>Street</label>
+        <Controller
+          control={control}
+          name={'addresses.0.street'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <label>City</label>
+        <Controller
+          control={control}
+          name={'addresses.0.city'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <label>Barangay</label>
+        <Controller
+          control={control}
+          name={'addresses.0.barangay'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
     </form>
   );
 };
