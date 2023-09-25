@@ -1,15 +1,16 @@
 import * as yup from 'yup';
 import { tests } from './schema-tests';
 
-export const InputDefaultRequiredTemplate = ({ label }): string =>
-  `Input ${label}`;
-export const selectDefaultRequiredTemplate = ({ label }): string =>
+export const InputDefaultRequiredTemplate = ({ label = 'field' }): string => {
+  return `Input ${label}`;
+};
+export const selectDefaultRequiredTemplate = ({ label = 'field' }): string =>
   `Select ${label}`;
-export const dateDefaultRequiredTemplate = ({ label }): string =>
+export const dateDefaultRequiredTemplate = ({ label = 'field' }): string =>
   `Input date ${label}`;
-export const defaultInvalidCharacter = ({ label }): string =>
+export const defaultInvalidCharacter = ({ label = 'field' }): string =>
   `Invalid Character(s) in ${label}`;
-export const defaultCheckboxRequired = ({ label }): string =>
+export const defaultCheckboxRequired = ({ label = 'field' }): string =>
   `Please select ${label}.`;
 
 const validateField = (_validator, _validation, _field) => {

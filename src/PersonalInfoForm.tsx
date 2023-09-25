@@ -142,7 +142,7 @@ const PersonalInfoForm = ({
         <h3>Addresses</h3>
       </div>
       <div>
-        <label>Street</label>
+        <label>Street 1</label>
         <Controller
           control={control}
           name={'addresses.0.street'}
@@ -157,7 +157,7 @@ const PersonalInfoForm = ({
         />
       </div>
       <div>
-        <label>City</label>
+        <label>City 1</label>
         <Controller
           control={control}
           name={'addresses.0.city'}
@@ -172,10 +172,55 @@ const PersonalInfoForm = ({
         />
       </div>
       <div>
-        <label>Barangay</label>
+        <label>Barangay 1</label>
         <Controller
           control={control}
           name={'addresses.0.barangay'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <label>Street 2</label>
+        <Controller
+          control={control}
+          name={'addresses.1.street'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <label>City 2</label>
+        <Controller
+          control={control}
+          name={'addresses.1.city'}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <div>
+                <input {...field} disabled={shouldDisableAllFields} />
+                {error && <p className='form-errors'>{error.message}</p>}
+              </div>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <label>Barangay 2</label>
+        <Controller
+          control={control}
+          name={'addresses.1.barangay'}
           render={({ field, fieldState: { error } }) => {
             return (
               <div>

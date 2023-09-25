@@ -102,11 +102,10 @@
       "label": "Employee ID",
       "type": "text",
       "validationType": "number",
-      "validationTypeError": "Employee ID must be a string",
+      "validationTypeError": "Employee ID must be a number",
       "validations": [
         {
-          "type": "required",
-          "params": "Required"
+          "type": "required"
         },
         {
           "type": "test",
@@ -149,6 +148,13 @@
           "validations": [
             {
               "type": "required"
+            },
+            {
+              "type": "test",
+              "params": {
+                "type": "existing",
+                "fnName": "alphanumeric"
+              }
             }
           ]
         },

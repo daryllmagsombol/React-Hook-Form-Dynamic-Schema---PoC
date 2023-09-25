@@ -14,4 +14,13 @@ export const tests = {
       return checkEmployeeIdUniqueness(value); // Call the validation function and return the result
     },
   },
+  alphanumeric: {
+    name: 'alphanumeric',
+    message: ({ label = 'This field' }) => `${label} must be alphanumeric`,
+    fn: async function (value) {
+      const _val = value;
+      if (!_val) return true;
+      return _val.match(/^[a-zA-Z0-9_]*$/);
+    },
+  },
 };
