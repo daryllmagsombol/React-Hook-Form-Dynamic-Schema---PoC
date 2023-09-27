@@ -8,7 +8,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // import personalInformationSchema from './schema/personalInformation';
 import getValidationSchema from './schema/common';
-const { data: personalInfoFields } = require('./schema/payload.json');
 
 const emptyEmployeeForm = {
   status: 'new',
@@ -68,7 +67,7 @@ const initialEmployeeList = [
   return acc;
 }, {}); // Normalize into [employeeID]:{...employeeObject}
 
-export default function App() {
+export default function App({ validationConfig }) {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(0);
   const [employeeList, setEmployeeList] = useState(initialEmployeeList);
@@ -180,7 +179,7 @@ export default function App() {
   };
 
   const personalInfoFormMethods = useForm({
-    resolver: yupResolver(getValidationSchema(personalInfoFields)),
+    resolver: yupResolver(getValidationSchema(validationConfig)),
     mode: 'onTouched',
     values: employeeList[selectedEmployeeId],
     context: { checkEmployeeIdUniqueness },
@@ -218,9 +217,10 @@ export default function App() {
 
         <h3>Employees</h3>
         <ul>
-          {submittedList.map((emp) => {
+          {submittedList.map((emp, i) => {
             return (
               <li
+                key={i}
                 className={selectedEmployeeId == emp.employeeId ? 'active' : ''}
                 onClick={() => {
                   handleClickEmployeeItem(emp.employeeId);
@@ -234,9 +234,10 @@ export default function App() {
 
         <h3>Drafts</h3>
         <ul>
-          {draftList.map((draft) => {
+          {draftList.map((draft, i) => {
             return (
               <li
+                key={i}
                 className={
                   selectedEmployeeId == draft.employeeId ? 'active' : ''
                 }
@@ -299,13 +300,13 @@ export default function App() {
 
           {activeTab === 1 && (
             <div>
-              <HobbiesAndInterestsForm></HobbiesAndInterestsForm>
+              <HobbiesAndInterestsForm />
             </div>
           )}
 
           {activeTab === 2 && (
             <div>
-              <FavoriteThingsForm></FavoriteThingsForm>
+              <FavoriteThingsForm />
             </div>
           )}
         </div>
